@@ -5,7 +5,6 @@ import os
 import time
 
 def PresentTheProgram():
-    time.sleep(2)
     if os.name == 'posix':
         os.system('clear')
     elif os.name == 'nt':
@@ -28,7 +27,6 @@ if __name__ == '__main__':
     environment = Environment(size,size)
     agent = RlAgent(size,size,epsilon,bufferSize,syncRate,batchSize,discount)
     i = 0
-    PresentTheProgram()
     while True:
         if i ==200:
             agent.epsilon = .1
@@ -62,4 +60,6 @@ if __name__ == '__main__':
             agent.memoryBuffer.AddTransition(state1,state2,r,a)
             agent.Train()
         print(f"steps during iteration {i}: {steps}")
+        if i == 0:
+            PresentTheProgram()
         i+=1
