@@ -11,11 +11,11 @@ def PresentTheProgram():
         os.system('cls')
     print("The program will start soon")
     time.sleep(2)
-    print("Before 1000 iterations have passed,\n you will notice that the agent is getting better\n as it needs fewer steps to complete a corse.")
+    print("Before 1000 iterations have passed,\nyou will notice that the agent is getting better\nas it needs fewer steps to complete a corse.")
     time.sleep(5)
-    print("When it has reached 2000 iterations, you\n get to see exactly how it acts.")
+    print("When it has reached 2000 iterations, you\nget to see exactly how it acts.")
     time.sleep(1)
-    print("Don't worry! It may seem slow at first,\n but you'll be surprised how fast\n it gets to 2000 iterations!")
+    print("Don't worry! It may seem slow at first,\nbut you'll be surprised how fast\nit gets to 2000 iterations!")
     time.sleep(5)
 
 if __name__ == '__main__':
