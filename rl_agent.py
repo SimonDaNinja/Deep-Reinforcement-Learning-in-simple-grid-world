@@ -38,8 +38,8 @@ class RlAgent:
     def __init__(self, gridHeight, gridWidth, epsilon, memoryBufferSize, syncRate, batchSize, discount):
         self.height = gridHeight
         self.width = gridWidth
-        self. qnet = self.GenerateNeuralNetworks()
-        self. tnet = self.GenerateNeuralNetworks()
+        self.qnet = self.GenerateNeuralNetworks()
+        self.tnet = self.GenerateNeuralNetworks()
         self.memoryBuffer = MemoryBuffer(gridHeight, gridWidth, memoryBufferSize)
         self.epsilon = epsilon
         self.syncCount = 0
@@ -50,28 +50,22 @@ class RlAgent:
 
     def GetAction(self,state):
         if np.random.rand()>self.epsilon:
-            qvals = self.GetQvals(state)
+            qvals = self.GetQvals(state,self.qnet)
             return np.argmax(qvals)
         else:
             return np.random.randint(0,4)
 
     def ShowValues(self,state):
-        qvals = self.GetQvals(state)
+        qvals = self.GetQvals(state,self.qnet)
         print(f"Up: {qvals[0,UP]}\nDown: {qvals[0,DOWN]}\nLeft: {qvals[0,LEFT]}\nRight: {qvals[0,RIGHT]}")
                 
                 
 
-    def GetQvals(self,state):
+    def GetQvals(self,state,net):
         if state.shape == (self.height,self.width):
-            return self.qnet.predict(state[np.newaxis,:,:,np.newaxis])
+            return net.predict(state[np.newaxis,:,:,np.newaxis])
         else:
-            return self.qnet.predict(state[:,:,:,np.newaxis])
-
-    def GetQvalsT(self,state):
-        if state.shape == (self.height,self.width):
-            return self.tnet.predict(state[np.newaxis,:,:,np.newaxis])
-        else:
-            return self.tnet.predict(state[:,:,:,np.newaxis])
+            return net.predict(state[:,:,:,np.newaxis])
 
     def GenerateNeuralNetworks(self):
         net = keras.Sequential([
@@ -86,8 +80,8 @@ class RlAgent:
     
     def Train(self):
         state1, state2, reward, action = self.memoryBuffer.GetRandomSample(self.batchSize)
-        target = self.GetQvals(state1)
-        qvals2 = self.GetQvalsT(state2)
+        target = self.GetQvals(state1,self.qnet)
+        qvals2 = self.GetQvals(state2,self.tnet)
         target[self.preAllocatedIndeces,action] = reward+np.max(qvals2,axis=1)*self.discount
         goalEntries = reward== GOAL_REWARD
         target[goalEntries,action[goalEntries]] = 0
