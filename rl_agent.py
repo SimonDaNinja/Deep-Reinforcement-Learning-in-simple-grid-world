@@ -77,7 +77,6 @@ class RlAgent:
         net = keras.Sequential([
             keras.layers.Conv2D(32,(3,3),strides=(2,2), data_format = "channels_last", input_shape = (self.height,self.width,1),activation='relu'),
             keras.layers.Flatten(),
-            #keras.layers.Dense(128, activation='relu'),
             keras.layers.Dense(64, activation='relu'),
             keras.layers.Dense(32, activation='relu'),
             keras.layers.Dense(4)])
@@ -90,8 +89,8 @@ class RlAgent:
         target = self.GetQvals(state1)
         qvals2 = self.GetQvalsT(state2)
         target[self.preAllocatedIndeces,action] = reward+np.max(qvals2,axis=1)*self.discount
-        zeroEntries = reward==0
-        target[zeroEntries,action[zeroEntries]] = 0
+        goalEntries = reward== GOAL_REWARD
+        target[goalEntries,action[goalEntries]] = 0
         self.qnet.fit(state1[:,:,:,np.newaxis], target, batch_size=self.batchSize, epochs=1, verbose=0)
         self.syncCount +=1
         if self.syncCount % self.syncRate == 0:

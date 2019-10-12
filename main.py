@@ -14,6 +14,8 @@ def PresentTheProgram():
     print("Before 1000 iterations have passed,\n you will notice that the agent is getting better\n as it needs fewer steps to complete a corse.")
     time.sleep(5)
     print("When it has reached 2000 iterations, you\n get to see exactly how it acts.")
+    time.sleep(1)
+    print("Don't worry! It may seem slow at first,\n but you'll be surprised how fast\n it gets to 2000 iterations!")
     time.sleep(5)
 
 if __name__ == '__main__':
@@ -46,9 +48,10 @@ if __name__ == '__main__':
                     os.system('clear')
                 elif os.name == 'nt':
                     os.system('cls')
-                print(f"step: {steps}")
+                print(f"iteration: {i}")
                 environment.ShowState()
-                #agent.ShowValues(state1)
+                print("action values:")
+                agent.ShowValues(state1)
                 time.sleep(.1)
 
             a = agent.GetAction(state1)
@@ -60,6 +63,9 @@ if __name__ == '__main__':
             agent.memoryBuffer.AddTransition(state1,state2,r,a)
             agent.Train()
         print(f"steps during iteration {i}: {steps}")
+        if i%100==0:
+            agent.qnet.save("network")
+
         if i == 0:
             PresentTheProgram()
         i+=1

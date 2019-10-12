@@ -27,27 +27,40 @@ class Environment:
         if action == UP:
             if self.agentPos[0] == 0:
                 return WALL_REWARD
+            d1=abs(self.agentPos[0]-self.goalPos[0])
             self.state[self.agentPos[0],self.agentPos[1]] = 0
             self.agentPos[0] = self.agentPos[0]-1
             self.state[self.agentPos[0],self.agentPos[1]]=AGENT_INDICATOR
+            if abs(self.agentPos[0]-self.goalPos[0])<d1 and d1>1:
+                return GOOD_STEP_REWARD
+
         if action == DOWN:
             if self.agentPos[0] == (self.height-1):
                 return WALL_REWARD
+            d1=abs(self.agentPos[0]-self.goalPos[0])
             self.state[self.agentPos[0],self.agentPos[1]] = 0
             self.agentPos[0] = self.agentPos[0]+1
             self.state[self.agentPos[0],self.agentPos[1]]=AGENT_INDICATOR
+            if abs(self.agentPos[0]-self.goalPos[0])<d1 and d1>1:
+                return GOOD_STEP_REWARD
         if action == LEFT:
             if self.agentPos[1] == 0:
                 return WALL_REWARD
+            d1=abs(self.agentPos[1]-self.goalPos[1])
             self.state[self.agentPos[0],self.agentPos[1]] = 0
             self.agentPos[1] = self.agentPos[1]-1
             self.state[self.agentPos[0],self.agentPos[1]]=AGENT_INDICATOR
+            if abs(self.agentPos[1]-self.goalPos[1])<d1 and d1>1:
+                return GOOD_STEP_REWARD
         if action == RIGHT:
             if self.agentPos[1] == (self.width-1):
                 return WALL_REWARD
+            d1=abs(self.agentPos[1]-self.goalPos[1])
             self.state[self.agentPos[0],self.agentPos[1]] = 0
             self.agentPos[1] = self.agentPos[1]+1
             self.state[self.agentPos[0],self.agentPos[1]]=AGENT_INDICATOR
+            if abs(self.agentPos[1]-self.goalPos[1])<d1 and d1>1:
+                return GOOD_STEP_REWARD
 
         if (self.agentPos == self.goalPos).all():
             self.state = None
