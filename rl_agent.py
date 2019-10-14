@@ -78,6 +78,9 @@ class RlAgent:
             keras.layers.Dense(32, activation='relu'),
             keras.layers.Dense(16, activation='relu'),
             keras.layers.Dense(4)])
+        # I'm not a big fan of fancy "adaptive" optimizers like adam.
+        # They're definitely faster, but some studies suggests they may not
+        # generalize quite as well as good ol' reliable SGD in the long run.
         net.compile(optimizer = 'SGD',
                                     loss = 'mean_squared_error')
         return net
