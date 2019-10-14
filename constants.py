@@ -3,9 +3,17 @@ DOWN = 1
 LEFT = 2
 RIGHT = 3
 
+AGENT_INDICATOR = 1
+GOAL_INDICATOR = -1
+
 # GOAL_REWARD must have a unique value
 # the way that training is currently
 # implemented
+
+GOAL_REWARD = 1
+GOOD_STEP_REWARD = -1
+STEP_REWARD = -3
+WALL_REWARD = -7
 
 # Default values are fast to teach
 # the agent for this application, but
@@ -37,10 +45,23 @@ RIGHT = 3
 # "don't walk into the wall" on its own more
 # easily, instead of us telling it so.
 
-GOAL_REWARD = 1
-GOOD_STEP_REWARD = -1
-STEP_REWARD = -3
-WALL_REWARD = -7
+# The reason it's good to find ways of
+# avoiding this sort of cheating isn't
+# just to impress people, but also
+# quite practical;
+# for this specific example, we may be
+# absolutely sure that walking into a
+# wall is a bad idea, and that short
+# term reduction of distance is a good
+# idea. But for more complex tasks,
+# it may sometimes be that we should
+# let the agent explore strategies that
+# seem bad to us at first, as it may find
+# advantages we didn't realize ourselves.
 
-AGENT_INDICATOR = 1
-GOAL_INDICATOR = -1
+# the idea is that if we are right about
+# such strategies being bad, then this 
+# will still be penalized in the long run,
+# teaching the agent to avoid them,
+# while if we were wrong, the agent can
+# find a good strategy we were unaware of.
