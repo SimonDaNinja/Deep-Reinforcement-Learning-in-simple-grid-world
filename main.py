@@ -11,15 +11,13 @@ def PresentTheProgram():
         os.system('cls')
     print("The program will start soon")
     time.sleep(2)
-    print("Before 1000 iterations have passed,\nyou will notice that the agent is getting better\nas it needs fewer steps to complete a corse.")
+    print("Before 1,000 iterations have passed,\nyou will notice that the agent is getting better\nas it needs fewer steps to complete a corse.")
     time.sleep(5)
-    print("When it has reached 2000 iterations, you\nget to see exactly how it acts.")
-    time.sleep(1)
-    print("Don't worry! It may seem slow at first,\nbut you'll be surprised how fast\nit gets to 2000 iterations!")
+    print("When it has reached 5,000 iterations, you\nget to see exactly how it acts.")
     time.sleep(5)
 
 if __name__ == '__main__':
-    size = 5
+    size = 10
     epsilon = .5
     bufferSize = 1000000
     syncRate = 1000
@@ -34,7 +32,7 @@ if __name__ == '__main__':
             agent.epsilon = .1
         if i == 1000:
             agent.epsilon = .05
-        if i == 2000:
+        if i == 5000:
             agent.epsilon = .02
             graphics = True
         steps = 0
@@ -52,7 +50,7 @@ if __name__ == '__main__':
                 environment.ShowState()
                 print("action values:")
                 agent.ShowValues(state1)
-                time.sleep(.1)
+                time.sleep(.4)
 
             a = agent.GetAction(state1)
             r = environment.PerformAction(a)

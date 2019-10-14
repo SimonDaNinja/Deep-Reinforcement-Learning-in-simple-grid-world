@@ -68,11 +68,15 @@ class RlAgent:
             return net.predict(state[:,:,:,np.newaxis])
 
     def GenerateNeuralNetworks(self):
+        # Good for 10x10
         net = keras.Sequential([
-            keras.layers.Conv2D(32,(3,3),strides=(2,2), data_format = "channels_last", input_shape = (self.height,self.width,1),activation='relu'),
+            keras.layers.Conv2D(32,(3,3),strides=(1,1), data_format = "channels_last", input_shape = (self.height,self.width,1),activation='relu'),
+            keras.layers.Conv2D(32,(3,3),strides=(1,1),activation='relu'),
+            keras.layers.Conv2D(32,(2,2),strides=(1,1),activation='relu'),
+            keras.layers.Conv2D(32,(3,3),strides=(1,1),activation='relu'),
             keras.layers.Flatten(),
-            keras.layers.Dense(64, activation='relu'),
             keras.layers.Dense(32, activation='relu'),
+            keras.layers.Dense(16, activation='relu'),
             keras.layers.Dense(4)])
         net.compile(optimizer = 'SGD',
                                     loss = 'mean_squared_error')
@@ -83,7 +87,7 @@ class RlAgent:
         target = self.GetQvals(state1,self.qnet)
         qvals2 = self.GetQvals(state2,self.tnet)
         target[self.preAllocatedIndeces,action] = reward+np.max(qvals2,axis=1)*self.discount
-        goalEntries = reward== GOAL_REWARD
+        goalEntries = reward == GOAL_REWARD
         target[goalEntries,action[goalEntries]] = 0
         self.qnet.fit(state1[:,:,:,np.newaxis], target, batch_size=self.batchSize, epochs=1, verbose=0)
         self.syncCount +=1
