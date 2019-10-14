@@ -30,9 +30,9 @@ if __name__ == '__main__':
     while True:
         if i ==200:
             agent.epsilon = .1
-        if i == 1000:
+        elif i == 1000:
             agent.epsilon = .05
-        if i == 5000:
+        elif i == 5000:
             agent.epsilon = .02
             graphics = True
         steps = 0
