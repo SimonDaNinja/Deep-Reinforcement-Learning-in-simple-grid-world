@@ -68,7 +68,26 @@ class RlAgent:
             return net.predict(state[:,:,:,np.newaxis])
 
     def GenerateNeuralNetworks(self):
-        # Good for 10x10
+        # This architecture seems to work well for 10x10
+
+        # I'm not a big fan of fancy "adaptive" optimizers like adam.
+        # They're definitely faster, but some studies suggests they may not
+        # generalize quite as well as good ol' reliable SGD in the long run.
+        # This may be debatable though, and for a bigger project, you may
+        # want to see how adaptive optimizers perform too. Moral of the story
+        # simply is: don't throw SGD out the window from the get-go, in my opinion.
+
+        # The reason for using mean squared error rather than something like
+        # cross entropy is easy: we aren't making category predictions, but
+        # we are trying to predict a function of more "floating" real-valued
+        # range. This is no surprise to reinforcement learners out there,
+        # but if you're used to doing "supervised learning", there's a
+        # chance you get a bit surprised by this choice at first.
+        
+        # This is also the reason for not using an activation function
+        # in the last layer; we aren't trying to get values between 0 and 1,
+        # but values in an, in principle, unbounded range.
+
         net = keras.Sequential([
             keras.layers.Conv2D(32,(3,3),strides=(1,1), data_format = "channels_last", input_shape = (self.height,self.width,1),activation='relu'),
             keras.layers.Conv2D(32,(3,3),strides=(1,1),activation='relu'),
@@ -78,9 +97,6 @@ class RlAgent:
             keras.layers.Dense(32, activation='relu'),
             keras.layers.Dense(16, activation='relu'),
             keras.layers.Dense(4)])
-        # I'm not a big fan of fancy "adaptive" optimizers like adam.
-        # They're definitely faster, but some studies suggests they may not
-        # generalize quite as well as good ol' reliable SGD in the long run.
         net.compile(optimizer = 'SGD',
                                     loss = 'mean_squared_error')
         return net
