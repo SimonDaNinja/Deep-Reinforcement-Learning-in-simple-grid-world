@@ -107,7 +107,7 @@ class RlAgent:
         qvals2 = self.GetQvals(state2,self.tnet)
         target[self.preAllocatedIndeces,action] = reward+np.max(qvals2,axis=1)*self.discount
         goalEntries = reward == GOAL_REWARD
-        target[goalEntries,action[goalEntries]] = 0
+        target[goalEntries,action[goalEntries]] = GOAL_REWARD
         self.qnet.fit(state1[:,:,:,np.newaxis], target, batch_size=self.batchSize, epochs=1, verbose=0)
         self.syncCount +=1
         if self.syncCount % self.syncRate == 0:
